@@ -7,6 +7,7 @@ type Error = Box<dyn std::error::Error + Send + Sync>;
 type Context<'a> = poise::Context<'a, (), Error>;
 
 pub mod search;
+pub mod rating;
 
 #[tokio::main]
 async fn main() {
@@ -19,7 +20,7 @@ async fn main() {
 
     let framework = poise::Framework::builder()
         .options(poise::FrameworkOptions {
-            commands: vec![ping(), search::imdb()],
+            commands: vec![ping(), search::imdb(), rating::ratings()],
             
             prefix_options: poise::PrefixFrameworkOptions {
                 prefix: Some("c,".into()),
