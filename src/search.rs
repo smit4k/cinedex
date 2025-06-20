@@ -41,7 +41,8 @@ async fn fetch_movie_data(title: &str) -> Result<OmdbMovie, reqwest::Error> {
     let omdb_api_key = std::env::var("omdb_api_key").expect("Missing omdb_api_key!");
     let url = format!(
         "http://www.omdbapi.com/?apikey={}&t={}&plot=short",
-        omdb_api_key, title
+        omdb_api_key, 
+        title
     );
 
     let response = reqwest::get(&url).await?;
