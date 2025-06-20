@@ -31,6 +31,8 @@ struct OmdbMovie {
     imdb_rating: Option<String>,
     #[serde(rename = "imdbID")]
     imdb_id: Option<String>,
+    #[serde(rename = "BoxOffice")]
+    box_office: Option<String>,
     #[serde(rename = "Response")]
     response: String,
     #[serde(rename = "Error")]
@@ -78,6 +80,7 @@ pub async fn imdb(
         .field("Runtime", movie.runtime.as_deref().unwrap_or("N/A"), true)
         .field("Genre", movie.genre.as_deref().unwrap_or("N/A"), true)
         .field("Director(s)", movie.director.as_deref().unwrap_or("N/A"), true)
+        .field("Box Office", movie.box_office.as_deref().unwrap_or("N/A"), true)
         .field("Actors", movie.actors.as_deref().unwrap_or("N/A"), false)
         .footer(CreateEmbedFooter::new(format!(
             "IMDb ID: {}",
