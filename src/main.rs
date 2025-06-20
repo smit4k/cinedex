@@ -34,7 +34,7 @@ async fn main() {
                 println!("Bot is connected as {}", ready.user.name);
                 
                 // Set bot presence
-                let activity = ActivityData::watching("over the server");
+                let activity = ActivityData::watching("movies");
                 let status = OnlineStatus::Online;
                 ctx.set_presence(Some(activity), status);
                 
