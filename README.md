@@ -1,11 +1,11 @@
 # 🎬 Cinedex
 
-**Cinedex** is a powerful and simple-to-use Discord bot that lets you search for detailed information about movies and TV shows using the [OMDb API](http://www.omdbapi.com/). Written in [Rust](https://www.rust-lang.org/) using the [Poise](https://github.com/serenity-rs/poise) framework on top of the [Serenity](https://github.com/serenity-rs/serenity) Discord API
+Cinedex is a powerful and simple-to-use Discord bot that lets you search for detailed information about movies and TV shows using the [OMDb API](http://www.omdbapi.com/). Written in [Rust](https://www.rust-lang.org/) using the [Poise](https://github.com/serenity-rs/poise) framework on top of the [Serenity](https://github.com/serenity-rs/serenity) Discord API
 
 ## ✨ Features
 
 - 🎥 Search for any movie, series, or episode by title
-- 📆 View release year, runtime, genre, director, actors
+- 📆 View release year, genre, rating, runtime, directors, and more!
 - 🌟 See IMDb ratings and metascores
 - 🖼️ Get movie posters right in the embed (requires OMDb Patreon)
 
