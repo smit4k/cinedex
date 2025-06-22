@@ -51,7 +51,7 @@ async fn fetch_movie_data(title: &str) -> Result<OmdbMovie, reqwest::Error> {
     response.json::<OmdbMovie>().await
 }
 
-/// Look up a movie
+/// Look up a movie or TV show
 #[poise::command(slash_command, prefix_command)]
 pub async fn imdb(
     ctx: Context<'_>,
