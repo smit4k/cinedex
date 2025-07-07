@@ -65,7 +65,8 @@ pub async fn imdb(
             .description(format!(
                 "Error: {}",
                 movie.error.unwrap_or_else(|| "Unknown Error".to_string())
-            ));
+            ))
+            .color(0xff4444);
 
         ctx.send(poise::CreateReply::default().embed(embed)).await?;
         return Ok(());
