@@ -63,7 +63,19 @@ async fn fetch_movie_data_id(id: &str) -> Result<OmdbMovie, reqwest::Error> {
     response.json::<OmdbMovie>().await
 }
 
-/// Look up a movie
+async fn fetch_movie_data_id(id: &str) -> Result<OmdbMovie, reqwest::Error> {
+    let omdb_api_key = std::env::var("omdb_api_key").expect("Missing omdb_api_key!");
+    let url = format!(
+        "https://www.omdbapi.com/?apikey={}&i={}",
+        omdb_api_key,
+        id,
+    );
+
+    let response = reqwest::get(&url).await?;
+    response.json::<OmdbMovie>().await
+}
+
+/// Look up a movie or TV show
 #[poise::command(slash_command, prefix_command)]
 pub async fn imdb(
     ctx: Context<'_>,
@@ -101,7 +113,8 @@ pub async fn imdb(
             .description(format!(
                 "Error: {}",
                 movie.error.unwrap_or_else(|| "Unknown Error".to_string())
-            ));
+            ))
+            .color(0xff4444);
 
         ctx.send(poise::CreateReply::default().embed(embed)).await?;
         return Ok(());
