@@ -39,7 +39,7 @@ struct OmdbMovie {
     error: Option<String>,
 }
 
-async fn fetch_movie_data(title: &str) -> Result<OmdbMovie, reqwest::Error> {
+async fn fetch_movie_data_title(title: &str) -> Result<OmdbMovie, reqwest::Error> {
     let omdb_api_key = std::env::var("omdb_api_key").expect("Missing omdb_api_key!");
     let url = format!(
         "http://www.omdbapi.com/?apikey={}&t={}&plot=short",
@@ -51,13 +51,49 @@ async fn fetch_movie_data(title: &str) -> Result<OmdbMovie, reqwest::Error> {
     response.json::<OmdbMovie>().await
 }
 
+async fn fetch_movie_data_id(id: &str) -> Result<OmdbMovie, reqwest::Error> {
+    let omdb_api_key = std::env::var("omdb_api_key").expect("Missing omdb_api_key!");
+    let url = format!(
+        "https://www.omdbapi.com/?apikey={}&i={}",
+        omdb_api_key,
+        id,
+    );
+
+    let response = reqwest::get(&url).await?;
+    response.json::<OmdbMovie>().await
+}
+
 /// Look up a movie
 #[poise::command(slash_command, prefix_command)]
 pub async fn imdb(
     ctx: Context<'_>,
-    #[description = "Movie title"] title: String,
+    #[description = "Movie title"] title: Option<String>,
+    #[description = "IMDb ID"] id: Option<String>,
 ) -> Result<(), Error> {
-    let movie = fetch_movie_data(&title).await?;
+    
+    let movie_result = if let Some(title) = title {
+        fetch_movie_data_title(&title).await
+    } else if let Some(id) = id {
+        fetch_movie_data_id(&id).await
+    } else {
+        let embed = CreateEmbed::default()
+            .title("❌ Error")
+            .description("Please provide either a movie title or IMDb ID.");
+        ctx.send(poise::CreateReply::default().embed(embed)).await?;
+        return Ok(());
+    };
+
+
+    let movie = match movie_result {
+        Ok(movie) => movie,
+        Err(err) => {
+            let embed = CreateEmbed::default()
+                .title("❌ Error fetching data")
+                .description(format!("Failed to fetch data from OMDb: {}", err));
+            ctx.send(poise::CreateReply::default().embed(embed)).await?;
+            return Ok(());
+        }
+    };
 
     if movie.response == "False" {
         let embed = CreateEmbed::default()
